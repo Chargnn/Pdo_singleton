@@ -11,7 +11,7 @@ class SPDO{
 
     private function __construct()
     {
-        $this->PDOInstance = new PDO('mysql:dbname='.self::SQL_DB.';host='.self::SQL_HOST, self::SQL_USER, self::SQL_PASSWORD);
+        $this->create();
 
         $this->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -65,8 +65,34 @@ class SPDO{
         return $this->query($query)->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Quote a string for use in query
+     * @param $value
+     * @return string
+     */
+
     public function quote($value){
         return $this->PDOInstance->quote($value);
     }
 
+    /**
+     * Create the PDO object / connection
+     */
+
+    public function create()
+    {
+        try {
+            $this->PDOInstance = new PDO('mysql:dbname=' . self::SQL_DB . ';host=' . self::SQL_HOST, self::SQL_USER, self::SQL_PASSWORD);
+        } catch (PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    /**
+     * Kill the PDO connection / object
+     */
+
+    public function kill(){
+        $this->PDOInstance = null;
+    }
 }
