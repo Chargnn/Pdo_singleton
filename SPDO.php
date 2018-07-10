@@ -26,6 +26,7 @@ class SPDO{
     }
 
     /**
+     * Set an attribute to PDO
      * @param $attribute
      * @param null $value
      */
